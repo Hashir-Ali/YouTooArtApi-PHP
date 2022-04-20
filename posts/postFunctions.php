@@ -7,7 +7,8 @@ function addPost($conn, $postData)
     $stmt->bind_param('iss', $postData['posted_by'], $postData['post_text'], $postData['post_url']);
 
     if ($stmt->execute()) {
-        return $stmt->insert_id;
+        // return $stmt->insert_id;
+        return getPost($conn, $stmt->insert_id);
     } else {
         return $stmt->error;
     }
@@ -68,7 +69,8 @@ function addComment($conn, $commentData)
     $stmt->bind_param('iis', $commentData['post_id'], $commentData['commented_by'], $commentData['commented_text']);
 
     if ($stmt->execute()) {
-        return ($stmt->insert_id);
+        // return ($stmt->insert_id);
+        return getPostComments($conn, $commentData['post_id']);
     } else {
         return ($stmt->error);
     }

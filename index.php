@@ -137,5 +137,106 @@ if ($intent == 'user') {
         $response['message'] = 'Requested endpoint not found.';
     }
 } elseif ($intent == 'posts') {
+    require_once('posts/postFunctions.php');
     // Post actions.
+    if ($_REQUEST['action'] === "addPost") {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $postData = addPost($conn, $_POST);
+            $response['code'] = 200;
+            $response['message'] = 'User Post added successfully.';
+            $response['data'] = $postData;
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Bad request.';
+        }
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'Bad request. No action specified.';
+    }
+    echo json_encode($response);
+} else if ($_REQUEST['action'] === 'updatePost') {
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+        $postData = updatePost($conn, $_POST);
+        $response['code'] = 200;
+        $response['message'] = 'User post updated successfully.';
+        $response['data'] = $postData;
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'Bad Request, kindly use POST method.';
+    }
+    echo json_encode($response);
+} else if ($_REQUEST['action'] === "getPost") {
+    $postData = getPost($conn, $_REQUEST['postId']);
+
+    if (!empty(json_decode($postData))) {
+        $response['code'] = 200;
+        $response['message'] = 'success';
+        $response['data'] = $postData;
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'Bad Request.';
+        $response['data'] = $postData;
+    }
+    echo (json_encode($response));
+} else if ($_REQUEST['action'] === 'deletePost') {
+    if (isset($_REQUEST['postId'])) {
+        if (deletePost($conn, $_POST['id'])) {
+            $response['code'] = 200;
+            $response['message'] = 'Post successfully deleted';
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Error updating post.';
+        }
+        echo (json_encode($response));
+    }
+} else if ($_REQUEST['action'] === 'getPosts') {
+
+    if (isset($_REQUEST['userId'])) {
+        $userPost = getUserPosts($conn, $_REQUEST['userId']);
+
+        $response['code'] = 200;
+        $response['message'] = 'success';
+        $response['data'] = $userPost;
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'error';
+    }
+    echo (json_encode($response));
+} else if ($_REQUEST['action'] === 'addComment') {
+    $comment = addComment($conn, $_POST);
+    if (!empty($comment)) {
+        $response['code'] = 200;
+        $response['message'] = 'comment added successfully';
+        $response['data'] = $comment;
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'Error updating comments.';
+    }
+    echo (json_encode($comment));
+} else if ($_REQUEST['action'] === 'deleteComment') {
+    $comment = deleteComment($conn, $_REQUEST['comment_id']);
+    if ($comment) {
+        $response['code'] = 200;
+        $response['message'] = 'comment deleted successfully';
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'error deleting comment';
+    }
+    echo (json_encode($response));
+} else if ($_REQUEST['action'] === 'updateComment') {
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+        $commentData = updateComment($conn, $_POST);
+        if ($commentData === true) {
+            $response['code'] = 200;
+            $response['message'] = 'Comment Updated successfuly.';
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Error: ' . $commentData;
+        }
+    } else {
+        $response['code'] = 400;
+        $response['message'] = 'Bad Request';
+    }
+
+    echo (json_encode($response));
 }
