@@ -113,5 +113,26 @@ function getPostComments($conn, $postId)
 }
 function addCommentLike($conn, $likeData)
 {
-    $sql = "";
+    $sql = "INSERT INTO `comment_likes`(`post_id`, `comment_id`, `liked_by`) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param('iii', $likeData['post_id'], $likeData['comment_id'], $likeData['liked_by']);
+
+    if ($stmt->execute()) {
+        echo getPostComments($conn, $likeData['post_id']);
+    } else {
+        json_encode(array());
+    }
+}
+function likePost($conn, $likeData)
+{
+    $sql = "INSERT INTO `post_likes`(`post_id`, `user_id`) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ii', $likeData['post_id'], $likeData['user_id']);
+
+    if ($stmt->execute()) {
+        echo (getPost($conn, $likeData['post_id']));
+    } else {
+        echo (json_encode(array()));
+    }
 }
