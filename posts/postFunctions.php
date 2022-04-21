@@ -121,9 +121,9 @@ function addCommentLike($conn, $likeData)
     $stmt->bind_param('iii', $likeData['post_id'], $likeData['comment_id'], $likeData['liked_by']);
 
     if ($stmt->execute()) {
-        echo getPostComments($conn, $likeData['post_id']);
+        return getPostComments($conn, $likeData['post_id']);
     } else {
-        json_encode(array());
+        return json_encode(array());
     }
 }
 function likePost($conn, $likeData)
@@ -133,8 +133,8 @@ function likePost($conn, $likeData)
     $stmt->bind_param('ii', $likeData['post_id'], $likeData['user_id']);
 
     if ($stmt->execute()) {
-        echo (getPost($conn, $likeData['post_id']));
+        return (getPost($conn, $likeData['post_id']));
     } else {
-        echo (json_encode(array()));
+        return (json_encode(array()));
     }
 }

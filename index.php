@@ -1,6 +1,7 @@
 <?php
 require('db_connect/connect.php');
-$action = $userData = '';
+$action = $userData = $intent = '';
+$intent = $_REQUEST['intent'];
 $response = array('code' => 200, 'message' => '', 'data' => json_encode(array()));
 
 if (!isset($_REQUEST['action'])) {
@@ -11,7 +12,7 @@ if (!isset($_REQUEST['action'])) {
     $action = $_REQUEST['action'];
 }
 
-if ($intent == 'user') {
+if ($intent  == 'user') {
     //User actions
     if ($action == 'addUser') {
 
@@ -149,94 +150,131 @@ if ($intent == 'user') {
             $response['code'] = 400;
             $response['message'] = 'Bad request.';
         }
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'Bad request. No action specified.';
-    }
-    echo json_encode($response);
-} else if ($_REQUEST['action'] === 'updatePost') {
-    if ($_SERVER['REQUEST_METHOD'] === "POST") {
-        $postData = updatePost($conn, $_POST);
-        $response['code'] = 200;
-        $response['message'] = 'User post updated successfully.';
-        $response['data'] = $postData;
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'Bad Request, kindly use POST method.';
-    }
-    echo json_encode($response);
-} else if ($_REQUEST['action'] === "getPost") {
-    $postData = getPost($conn, $_REQUEST['postId']);
-
-    if (!empty(json_decode($postData))) {
-        $response['code'] = 200;
-        $response['message'] = 'success';
-        $response['data'] = $postData;
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'Bad Request.';
-        $response['data'] = $postData;
-    }
-    echo (json_encode($response));
-} else if ($_REQUEST['action'] === 'deletePost') {
-    if (isset($_REQUEST['postId'])) {
-        if (deletePost($conn, $_POST['id'])) {
+        echo json_encode($response);
+    } else if ($_REQUEST['action'] === 'updatePost') {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $postData = updatePost($conn, $_POST);
             $response['code'] = 200;
-            $response['message'] = 'Post successfully deleted';
+            $response['message'] = 'User post updated successfully.';
+            $response['data'] = $postData;
         } else {
             $response['code'] = 400;
-            $response['message'] = 'Error updating post.';
+            $response['message'] = 'Bad Request, kindly use POST method.';
+        }
+        echo json_encode($response);
+    } else if ($_REQUEST['action'] === "getPost") {
+        $postData = getPost($conn, $_REQUEST['postId']);
+
+        if (!empty(json_decode($postData))) {
+            $response['code'] = 200;
+            $response['message'] = 'success';
+            $response['data'] = $postData;
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Bad Request.';
+            $response['data'] = $postData;
         }
         echo (json_encode($response));
-    }
-} else if ($_REQUEST['action'] === 'getPosts') {
+    } else if ($_REQUEST['action'] === 'deletePost') {
+        if (isset($_REQUEST['postId'])) {
+            if (deletePost($conn, $_POST['id'])) {
+                $response['code'] = 200;
+                $response['message'] = 'Post successfully deleted';
+            } else {
+                $response['code'] = 400;
+                $response['message'] = 'Error updating post.';
+            }
+            echo (json_encode($response));
+        }
+    } else if ($_REQUEST['action'] === 'getPosts') {
 
-    if (isset($_REQUEST['userId'])) {
-        $userPost = getUserPosts($conn, $_REQUEST['userId']);
+        if (isset($_REQUEST['userId'])) {
+            $userPost = getUserPosts($conn, $_REQUEST['userId']);
 
-        $response['code'] = 200;
-        $response['message'] = 'success';
-        $response['data'] = $userPost;
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'error';
-    }
-    echo (json_encode($response));
-} else if ($_REQUEST['action'] === 'addComment') {
-    $comment = addComment($conn, $_POST);
-    if (!empty($comment)) {
-        $response['code'] = 200;
-        $response['message'] = 'comment added successfully';
-        $response['data'] = $comment;
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'Error updating comments.';
-    }
-    echo (json_encode($comment));
-} else if ($_REQUEST['action'] === 'deleteComment') {
-    $comment = deleteComment($conn, $_REQUEST['comment_id']);
-    if ($comment) {
-        $response['code'] = 200;
-        $response['message'] = 'comment deleted successfully';
-    } else {
-        $response['code'] = 400;
-        $response['message'] = 'error deleting comment';
-    }
-    echo (json_encode($response));
-} else if ($_REQUEST['action'] === 'updateComment') {
-    if ($_SERVER['REQUEST_METHOD'] === "POST") {
-        $commentData = updateComment($conn, $_POST);
-        if ($commentData === true) {
             $response['code'] = 200;
-            $response['message'] = 'Comment Updated successfuly.';
+            $response['message'] = 'success';
+            $response['data'] = $userPost;
         } else {
             $response['code'] = 400;
-            $response['message'] = 'Error: ' . $commentData;
+            $response['message'] = 'error';
         }
+        echo (json_encode($response));
+    } else if ($_REQUEST['action'] === 'addComment') {
+        $comment = addComment($conn, $_POST);
+        if (!empty($comment)) {
+            $response['code'] = 200;
+            $response['message'] = 'comment added successfully';
+            $response['data'] = $comment;
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Error updating comments.';
+        }
+        echo (json_encode($comment));
+    } else if ($_REQUEST['action'] === 'deleteComment') {
+        $comment = deleteComment($conn, $_REQUEST['comment_id']);
+        if ($comment) {
+            $response['code'] = 200;
+            $response['message'] = 'comment deleted successfully';
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'error deleting comment';
+        }
+        echo (json_encode($response));
+    } else if ($_REQUEST['action'] === 'updateComment') {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $commentData = updateComment($conn, $_POST);
+            if ($commentData === true) {
+                $response['code'] = 200;
+                $response['message'] = 'Comment Updated successfuly.';
+            } else {
+                $response['code'] = 400;
+                $response['message'] = 'Error: ' . $commentData;
+            }
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Bad Request';
+        }
+        echo (json_encode($response));
+    } else if ($_REQUEST['action'] === 'getPostComments') {
+        $postComments = getPostComments($conn, $_REQUEST['post_id']);
+
+        if (count(get_object_vars(json_decode($postComments))) >= 1) {
+            $response['code'] = 200;
+            $response['message'] = 'success';
+            $response['data'] = $postComments;
+        } else {
+            $response['code'] = 200;
+            $response['message'] = 'No comments.';
+            $response['data'] = [];
+        }
+        echo (json_encode($response));
+    } else if ($_REQUEST['action'] === 'addCommentLike') {
+        $addedComment = addCommentLike($conn, $_POST);
+        if (count(get_object_vars(json_decode($addedComment))) >= 1) {
+            $response['code'] = 200;
+            $response['message'] = 'Comment added successfully.';
+            $response['data'] = $addedComment;
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'some error occured while adding the comment';
+        }
+        echo (json_encode($response));
+    } else if ($_REQUEST['action'] === 'likePost') {
+        $likedPost = likePost($conn, $_POST);
+
+        if (count(get_object_vars(json_decode($likedPost))) >= 1) {
+            $response['code'] = 200;
+            $response['message'] = 'Post liked successfully.';
+            $response['data'] = $likedPost;
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'There was an error liking the post.';
+        }
+        echo json_encode($likedPost);
     } else {
         $response['code'] = 400;
-        $response['message'] = 'Bad Request';
+        $response['message'] = 'Unknown action method.';
+        $response['data'] = [];
+        echo json_encode($response);
     }
-
-    echo (json_encode($response));
 }
