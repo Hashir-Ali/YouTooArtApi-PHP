@@ -11,8 +11,34 @@
 				{
 					"name": "addUser",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Phone",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "/index.php?intent=user&action=addUser",
+							"path": [
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "addUser"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -20,15 +46,63 @@
 					"name": "ListAllUsers",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "/index.php?intent=user&action=getAllUsers",
+							"path": [
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "getAllUsers"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "loginUser",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Phone",
+									"value": "+923119219602",
+									"type": "text"
+								},
+								{
+									"key": "otpStatus",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "index.php?intent=user&action=loginUser",
+							"host": [
+								"index",
+								"php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "loginUser"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -36,15 +110,122 @@
 					"name": "logoutUser",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "/index.php?intent=user&action=logoutUser&Phone=+923119219602",
+							"path": [
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "logoutUser"
+								},
+								{
+									"key": "Phone",
+									"value": "+923119219602"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "updateUser",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_picture",
+									"value": "https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Hashir",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Shah",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Islamabad",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "Pakistan",
+									"type": "text"
+								},
+								{
+									"key": "short_bio",
+									"value": "I am a software engineer.",
+									"type": "text"
+								},
+								{
+									"key": "feature_img_1",
+									"value": "abcd",
+									"type": "text"
+								},
+								{
+									"key": "feature_img_2",
+									"value": "https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg",
+									"type": "text"
+								},
+								{
+									"key": "feature_img_3",
+									"value": "https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg",
+									"type": "text"
+								},
+								{
+									"key": "work_video",
+									"value": "https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg",
+									"type": "text"
+								},
+								{
+									"key": "work_photos",
+									"value": "https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "Phone",
+									"value": "+923119219602",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "index.php?intent=user&action=updateUser",
+							"host": [
+								"index",
+								"php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "updateUser"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -52,11 +233,314 @@
 					"name": "getUser",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost/sites/youtooartapi/index.php?intent=user&action=getUser&userId=9",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"youtooartapi",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "user"
+								},
+								{
+									"key": "action",
+									"value": "getUser"
+								},
+								{
+									"key": "userId",
+									"value": "9"
+								}
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "getPost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP/index.php?intent=posts&action=getPosts&userId=9",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "getPosts"
+								},
+								{
+									"key": "userId",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllPosts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP/index.php?intent=posts&action=getAllPosts",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "getAllPosts"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePost",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addPost",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updatePost",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "post_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "post_text",
+									"value": "This is an updated post",
+									"type": "text"
+								},
+								{
+									"key": "post_url",
+									"value": "https://www.youtube.com/watch?v=sc6DAwLl2qY",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP/index.php?intent=posts&action=addPost",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "addPost"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "addComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "post_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "commented_by",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "commented_text",
+									"value": "This is a test comment on post 2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{endpoint}}?intent=posts&action=addComment",
+							"host": [
+								"{{endpoint}}"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "addComment"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "comment_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "commented_by",
+									"value": "9",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "comment_text",
+									"value": "This is a test comment updated later",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{endpoint}}?intent=posts&action=updateComment",
+							"host": [
+								"{{endpoint}}"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "updateComment"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPostComments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}?intent=posts&action=getPostComments&postId=2",
+							"host": [
+								"{{endpoint}}"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "posts"
+								},
+								{
+									"key": "action",
+									"value": "getPostComments"
+								},
+								{
+									"key": "postId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCommentLike",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}",
+							"host": [
+								"{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "folderName",
+			"value": "youtooartapi"
+		},
+		{
+			"key": "endpoint",
+			"value": "localhost/sites/YouTooArtApi-PHP/index.php"
 		}
 	]
 }
