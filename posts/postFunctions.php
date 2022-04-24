@@ -2,7 +2,7 @@
 
 function addPost($conn, $postData)
 {
-    $SQL = "INSERT INTO `posts`( `posted_by`, `post_text`, `post_url`) VALUES ('?','?','?')";
+    $SQL = "INSERT INTO `posts`( `posted_by`, `post_text`, `post_url`) VALUES (?,?,?)";
     $stmt = $conn->prepare($SQL);
     $stmt->bind_param('iss', $postData['posted_by'], $postData['post_text'], $postData['post_url']);
 
@@ -15,7 +15,7 @@ function addPost($conn, $postData)
 }
 function updatePost($conn, $postData)
 {
-    $sql = "UPDATE `posts` SET `post_text`='?',`post_url`='?' WHERE `post_id` = ?";
+    $sql = "UPDATE `posts` SET `post_text`=?,`post_url`=? WHERE `post_id` = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ssi', $postData['post_text'], $postData['post_url'], $postData['post_id']);
 
@@ -86,13 +86,14 @@ function deleteComment($conn, $commentId)
         return false;
     }
 }
+//need get specific comment function..
 function updateComment($conn, $commentData)
 {
     $sql = "UPDATE `post_comments` SET `commented_text`= ? WHERE `id` = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('si', $commentData['comment_text'], $commentData['id']);
+    $stmt->bind_param('si', $commentData['comment_text'], $commentData['comment_id']);
     if ($stmt->execute()) {
-        return true;
+        return getPostComments($conn, $commentData['comment_id']);
     } else {
         return ($stmt->error);
     }
@@ -100,13 +101,15 @@ function updateComment($conn, $commentData)
 function getPostComments($conn, $postId)
 {
     $commentsArray = array();
-    $sql = "SELECT * FROM `post_comments` WHERE `post_id` = " . $postId;
+    $sql = "SELECT * FROM `post_comments` WHERE `post_id` = " . $postId . "";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             array_push($commentsArray, $row);
         }
+
+        //append likes as well.
         return json_encode($commentsArray);
     } else {
         return json_encode(array());
@@ -126,6 +129,9 @@ function addCommentLike($conn, $likeData)
         return json_encode(array());
     }
 }
+
+// get comment like
+// unlike commend 
 function likePost($conn, $likeData)
 {
     $sql = "INSERT INTO `post_likes`(`post_id`, `user_id`) VALUES (?, ?)";
@@ -138,3 +144,5 @@ function likePost($conn, $likeData)
         return (json_encode(array()));
     }
 }
+// unlike post.
+// get post likes

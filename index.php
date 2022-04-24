@@ -1,7 +1,6 @@
 <?php
 require('db_connect/connect.php');
 $action = $userData = $intent = '';
-$intent = $_REQUEST['intent'];
 $response = array('code' => 200, 'message' => '', 'data' => json_encode(array()));
 
 if (!isset($_REQUEST['action'])) {
@@ -10,6 +9,14 @@ if (!isset($_REQUEST['action'])) {
     die(json_encode($response));
 } else {
     $action = $_REQUEST['action'];
+}
+
+if (!isset($_REQUEST['intent'])) {
+    $response['code'] = 500;
+    $response['message'] = 'no intent specified.';
+    die(json_encode($response));
+} else {
+    $intent = $_REQUEST['intent'];
 }
 
 if ($intent  == 'user') {
@@ -145,7 +152,7 @@ if ($intent  == 'user') {
             $postData = addPost($conn, $_POST);
             $response['code'] = 200;
             $response['message'] = 'User Post added successfully.';
-            $response['data'] = $postData;
+            $response['data'] = json_decode($postData);
         } else {
             $response['code'] = 400;
             $response['message'] = 'Bad request.';
@@ -156,7 +163,7 @@ if ($intent  == 'user') {
             $postData = updatePost($conn, $_POST);
             $response['code'] = 200;
             $response['message'] = 'User post updated successfully.';
-            $response['data'] = $postData;
+            $response['data'] = json_decode($postData);
         } else {
             $response['code'] = 400;
             $response['message'] = 'Bad Request, kindly use POST method.';
@@ -168,7 +175,7 @@ if ($intent  == 'user') {
         if (!empty(json_decode($postData))) {
             $response['code'] = 200;
             $response['message'] = 'success';
-            $response['data'] = $postData;
+            $response['data'] = json_decode($postData);
         } else {
             $response['code'] = 400;
             $response['message'] = 'Bad Request.';
@@ -177,7 +184,7 @@ if ($intent  == 'user') {
         echo (json_encode($response));
     } else if ($_REQUEST['action'] === 'deletePost') {
         if (isset($_REQUEST['postId'])) {
-            if (deletePost($conn, $_POST['id'])) {
+            if (deletePost($conn, $_REQUEST['postId'])) {
                 $response['code'] = 200;
                 $response['message'] = 'Post successfully deleted';
             } else {
@@ -186,14 +193,14 @@ if ($intent  == 'user') {
             }
             echo (json_encode($response));
         }
-    } else if ($_REQUEST['action'] === 'getPosts') {
+    } else if ($_REQUEST['action'] === 'getAllPosts') {
 
         if (isset($_REQUEST['userId'])) {
             $userPost = getUserPosts($conn, $_REQUEST['userId']);
 
             $response['code'] = 200;
             $response['message'] = 'success';
-            $response['data'] = $userPost;
+            $response['data'] = json_decode($userPost);
         } else {
             $response['code'] = 400;
             $response['message'] = 'error';
@@ -204,12 +211,13 @@ if ($intent  == 'user') {
         if (!empty($comment)) {
             $response['code'] = 200;
             $response['message'] = 'comment added successfully';
-            $response['data'] = $comment;
+            $response['data'] = json_decode($comment);
         } else {
             $response['code'] = 400;
             $response['message'] = 'Error updating comments.';
         }
-        echo (json_encode($comment));
+        // echo ("I am here.");
+        echo (json_encode($response));
     } else if ($_REQUEST['action'] === 'deleteComment') {
         $comment = deleteComment($conn, $_REQUEST['comment_id']);
         if ($comment) {
@@ -223,7 +231,7 @@ if ($intent  == 'user') {
     } else if ($_REQUEST['action'] === 'updateComment') {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $commentData = updateComment($conn, $_POST);
-            if ($commentData === true) {
+            if (!empty(json_decode($commentData))) {
                 $response['code'] = 200;
                 $response['message'] = 'Comment Updated successfuly.';
             } else {
@@ -236,12 +244,12 @@ if ($intent  == 'user') {
         }
         echo (json_encode($response));
     } else if ($_REQUEST['action'] === 'getPostComments') {
-        $postComments = getPostComments($conn, $_REQUEST['post_id']);
+        $postComments = getPostComments($conn, $_REQUEST['postId']);
 
-        if (count(get_object_vars(json_decode($postComments))) >= 1) {
+        if (!empty(json_decode($postComments))) {
             $response['code'] = 200;
             $response['message'] = 'success';
-            $response['data'] = $postComments;
+            $response['data'] = json_decode($postComments);
         } else {
             $response['code'] = 200;
             $response['message'] = 'No comments.';
