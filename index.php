@@ -279,10 +279,27 @@ if ($intent  == 'user') {
             $response['message'] = 'There was an error liking the post.';
         }
         echo json_encode($likedPost);
+    } else if ($_REQUEST['action'] === 'unlikePost') {
+        $unlikePost = unlikePost($conn, $_REQUEST['likeId']);
+
+        if ($unlikePost) {
+        } else {
+        }
     } else {
         $response['code'] = 400;
         $response['message'] = 'Unknown action method.';
         $response['data'] = [];
         echo json_encode($response);
+    }
+} elseif ($intent == 'casting_calls') {
+    if ($action == 'addCall') {
+        $postData = (addJob($conn, $_POST));
+        $response['code'] = 200;
+        $response['message'] = 'Casting call added successfully.';
+        $response['data'] = json_decode($postData);
+    } else if ($action == 'applyToCall') {
+    } else if ($action == 'approveApply') {
+    } else if ($action == 'declineApply') {
+    } else if ($action == '') {
     }
 }

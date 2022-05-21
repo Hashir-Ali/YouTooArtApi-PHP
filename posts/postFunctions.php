@@ -129,9 +129,31 @@ function addCommentLike($conn, $likeData)
         return json_encode(array());
     }
 }
-
 // get comment like
-// unlike commend 
+function getCommentLikes($conn, $commentId)
+{
+    $likesArray = array();
+    $sql = 'SELECT * FROM `comment_likes` WHERE `comment_id` = ' . $commentId . "";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($likesArray, $row);
+        }
+        return json_encode($likesArray);
+    }
+    return json_encode($likesArray);
+}
+// unlike comment 
+function unlikeComment($conn, $likeId)
+{
+    $sql = "DELETE FROM `comment_likes` WHERE `id` = " . $likeId . "";
+    $result = $conn->query($sql);
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
+}
 function likePost($conn, $likeData)
 {
     $sql = "INSERT INTO `post_likes`(`post_id`, `user_id`) VALUES (?, ?)";
@@ -145,4 +167,21 @@ function likePost($conn, $likeData)
     }
 }
 // unlike post.
+function unlikePost($conn, $likeId)
+{
+    $sql = "DELETE FROM `post_likes` WHERE `id`=" . $likeId . " ";
+    $result = $conn->query($sql);
+
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
+}
 // get post likes
+function getPostLikes($conn, $postId)
+{
+    $sql = 'SELECT * FROM `post_likes` WHERE `post_id` = ' . $postId . '';
+    $result = $conn->query($sql);
+    return $result->num_rows;
+}
