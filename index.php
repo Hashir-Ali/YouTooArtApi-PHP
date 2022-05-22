@@ -409,4 +409,24 @@ if ($intent  == 'user') {
         $response['data'] = '';
         echo json_encode($response);
     }
+} elseif ($intent == 'notifications') {
+    require_once('notifications/notificationFunctions.php');
+    if ($action == 'listNotifications') {
+        $notifications = listNotifications($conn, $_REQUEST['userId']);
+        $response['code'] = 200;
+        $response['message'] = 'Notifications Data';
+        $response['data'] = json_decode($notifications);
+        echo json_encode($response);
+    } else {
+        $response['code'] = 500;
+        $response['message'] = 'No action specified';
+        $response['data'] = array();
+        echo json_encode($response);
+    }
+} else {
+    $response['code'] = 500;
+    $response['message'] = 'Unknown intent.';
+    $response['data'] = array();
+
+    echo json_encode($response);
 }
