@@ -298,8 +298,115 @@ if ($intent  == 'user') {
         $response['message'] = 'Casting call added successfully.';
         $response['data'] = json_decode($postData);
     } else if ($action == 'applyToCall') {
+        $postData = (applyToCall($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'apply to call successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'Some error try again';
+            $response['data'] = [];
+        }
     } else if ($action == 'approveApply') {
+        $postData = (acceptApply($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'Approve apply successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'There is an error approving apply try again';
+            $response['data'] = [];
+        }
     } else if ($action == 'declineApply') {
-    } else if ($action == '') {
+        $postData = (rejectApply($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'reject apply successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'some error occured while rejecting apply try again';
+            $response['data'] = [];
+        }
+    } else if ($action == 'listJobs') {
+        $postData = (listJobs($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'list of job fetch successfully. ';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'something wrong to show the list try again.';
+            $response['data'] = [];
+        }
+    } else if ($action == 'listApplies') {
+        $postData = (listApplies($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'list of applies loaded successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'some error occured plesae try again.';
+            $response['data'] = [];
+        }
+    }
+} elseif ($intent == 'friends') {
+    require_once('friends/friendFunctions.php');
+    if ($action == 'listFriends') {
+        $postData = (listFriends($conn, $_REQUEST['userId']));
+        $response['code'] = 200;
+        $response['message'] = 'list has been loaded successfully.';
+        $response['data'] = json_decode($postData);
+        echo json_encode($response);
+    } else if ($action == 'friendRequests') {
+        $postData = (friendRequests($conn, $_REQUEST['userId']));
+        $response['code'] = 200;
+        $response['message'] = 'Friend request list';
+        $response['data'] = json_decode($postData);
+        echo (json_encode($response));
+    } else if ($action == 'sendRequest') {
+        $postData = (sendRequest($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'friend request sended successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'while sending request have some problem please try again';
+            $response['data'] = [];
+        }
+        echo json_encode($response);
+    } else if ($action == 'acceptFriendRequest') {
+        $postData = (acceptFriendRequest($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'friend request accepted successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'while accepting request have some problem please try again';
+            $response['data'] = [];
+        }
+        echo json_encode($response);
+    } else if ($action == 'rejectFriendRequest') {
+        $postData = (rejectFriendRequest($conn, $_POST));
+        if ($postData > 0) {
+            $response['code'] = 200;
+            $response['message'] = 'friend request rejected successfully.';
+            $response['data'] = json_decode($postData);
+        } else {
+            $response['code'] = 500;
+            $response['message'] = 'while rejecting request have some problem please try again';
+            $response['data'] = [];
+        }
+        echo json_encode($response);
+    } else {
+        $response['code'] = 500;
+        $response['message'] = 'Unknown action.';
+        $response['data'] = '';
+        echo json_encode($response);
     }
 }
