@@ -292,11 +292,13 @@ if ($intent  == 'user') {
         echo json_encode($response);
     }
 } elseif ($intent == 'casting_calls') {
+    require_once('./jobs/jobFunctions.php');
     if ($action == 'addCall') {
         $postData = (addJob($conn, $_POST));
         $response['code'] = 200;
         $response['message'] = 'Casting call added successfully.';
         $response['data'] = json_decode($postData);
+        echo (json_encode($response));
     } else if ($action == 'applyToCall') {
         $postData = (applyToCall($conn, $_POST));
         if ($postData > 0) {
@@ -306,21 +308,17 @@ if ($intent  == 'user') {
         } else {
             $response['code'] = 500;
             $response['message'] = 'Some error try again';
-            $response['data'] = [];
+            $response['data'] = $postData;
         }
+        echo (json_encode($response));
     } else if ($action == 'approveApply') {
-        $postData = (acceptApply($conn, $_POST));
-        if ($postData > 0) {
-            $response['code'] = 200;
-            $response['message'] = 'Approve apply successfully.';
-            $response['data'] = json_decode($postData);
-        } else {
-            $response['code'] = 500;
-            $response['message'] = 'There is an error approving apply try again';
-            $response['data'] = [];
-        }
+        $postData = (acceptApply($conn, $_REQUEST['ID']));
+        $response['code'] = 200;
+        $response['message'] = 'Approve apply successfully.';
+        $response['data'] = json_decode($postData);
+        echo (json_encode($response));
     } else if ($action == 'declineApply') {
-        $postData = (rejectApply($conn, $_POST));
+        $postData = (rejectApply($conn, $_REQUEST['ID']));
         if ($postData > 0) {
             $response['code'] = 200;
             $response['message'] = 'reject apply successfully.';
@@ -330,8 +328,9 @@ if ($intent  == 'user') {
             $response['message'] = 'some error occured while rejecting apply try again';
             $response['data'] = [];
         }
+        echo (json_encode($response));
     } else if ($action == 'listJobs') {
-        $postData = (listJobs($conn, $_POST));
+        $postData = (listJobs($conn, $_REQUEST['CREW_TYPE']));
         if ($postData > 0) {
             $response['code'] = 200;
             $response['message'] = 'list of job fetch successfully. ';
@@ -341,8 +340,9 @@ if ($intent  == 'user') {
             $response['message'] = 'something wrong to show the list try again.';
             $response['data'] = [];
         }
+        echo (json_encode($response));
     } else if ($action == 'listApplies') {
-        $postData = (listApplies($conn, $_POST));
+        $postData = (listApplies($conn, $_REQUEST['ID']));
         if ($postData > 0) {
             $response['code'] = 200;
             $response['message'] = 'list of applies loaded successfully.';
@@ -352,6 +352,7 @@ if ($intent  == 'user') {
             $response['message'] = 'some error occured plesae try again.';
             $response['data'] = [];
         }
+        echo (json_encode($response));
     }
 } elseif ($intent == 'friends') {
     require_once('friends/friendFunctions.php');
@@ -380,8 +381,9 @@ if ($intent  == 'user') {
         }
         echo json_encode($response);
     } else if ($action == 'acceptFriendRequest') {
-        $postData = (acceptFriendRequest($conn, $_POST));
+        $postData = (acceptFriendRequest($conn, $_REQUEST['ID']));
         if ($postData > 0) {
+            sendNotification($conn, $userId, $notificationType, $notificationText);
             $response['code'] = 200;
             $response['message'] = 'friend request accepted successfully.';
             $response['data'] = json_decode($postData);
@@ -392,7 +394,7 @@ if ($intent  == 'user') {
         }
         echo json_encode($response);
     } else if ($action == 'rejectFriendRequest') {
-        $postData = (rejectFriendRequest($conn, $_POST));
+        $postData = (rejectFriendRequest($conn, $_REQUEST['ID']));
         if ($postData > 0) {
             $response['code'] = 200;
             $response['message'] = 'friend request rejected successfully.';

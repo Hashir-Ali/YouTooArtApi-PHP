@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "71b3d453-7d41-4a8f-ad5c-694a8e11ccd9",
 		"name": "youtooartapi",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19705069"
 	},
 	"item": [
 		{
@@ -527,6 +528,296 @@
 								"{{endpoint}}"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friends",
+			"item": [
+				{
+					"name": "GetFriends",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getFriendRequests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://youtooart.hsoftworks.com/YouTooArtApi-PHP/?intent=friends&action=friendRequests&userId=1",
+							"protocol": "https",
+							"host": [
+								"youtooart",
+								"hsoftworks",
+								"com"
+							],
+							"path": [
+								"YouTooArtApi-PHP",
+								""
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "friends"
+								},
+								{
+									"key": "action",
+									"value": "friendRequests"
+								},
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendFriendRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptFriendRequest",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "rejectFriendRequest",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CastingCalls",
+			"item": [
+				{
+					"name": "addCall",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uploaded_by",
+									"value": "1",
+									"description": "user ID",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "test Title",
+									"type": "text"
+								},
+								{
+									"key": "content_type",
+									"value": "short Film",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "starting_age",
+									"value": "21",
+									"type": "text"
+								},
+								{
+									"key": "ending_age",
+									"value": "25",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Hyderabad",
+									"type": "text"
+								},
+								{
+									"key": "shoot",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "remuneration_name",
+									"value": "Paid",
+									"type": "text"
+								},
+								{
+									"key": "remuneration_amount",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "crew_req",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "crew_type",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "31/12/2022",
+									"type": "text"
+								},
+								{
+									"key": "requirements_text",
+									"value": "Do give an idea on the content. What you expect from the candidate? Mention if any special skill is required.",
+									"type": "text"
+								},
+								{
+									"key": "payment_status",
+									"value": "1",
+									"description": "0 means unpaid, 1 means paid.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP/?intent=casting_calls&action=addCall",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP",
+								""
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "casting_calls"
+								},
+								{
+									"key": "action",
+									"value": "addCall"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listJobs",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "applyToCall",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP?intent=casting_call&action=applyToCall",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP"
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "casting_call"
+								},
+								{
+									"key": "action",
+									"value": "applyToCall"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approveApply",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "rejectRequest",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "listApplies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/sites/YouTooArtApi-PHP/?intent=casting_calls&action=listApplies&ID=2",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"sites",
+								"YouTooArtApi-PHP",
+								""
+							],
+							"query": [
+								{
+									"key": "intent",
+									"value": "casting_calls"
+								},
+								{
+									"key": "action",
+									"value": "listApplies"
+								},
+								{
+									"key": "ID",
+									"value": "2",
+									"description": "ID of the casting call."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "ListUserNotifications",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}

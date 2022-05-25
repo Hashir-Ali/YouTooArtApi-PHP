@@ -3,20 +3,20 @@ function addJob($conn, $postData)
 {
     $sql = "INSERT INTO `casting_calls`(`uploaded_by`, `title`, `content_type`, `gender`, `starting_age`,
          `ending_age`, `city`, `shoot`, `remuneration_name`, `remuneration_amount`, `crew_req`, 
-         `crew_type`, `expiry_date`, `requirements_text`, `payment_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+         `crew_type`, `expiry_date`, `requirements_text`, `payment_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_params(
+    $stmt->bind_param(
         'isssiisssiissss',
-        (int)$postData['uploaded_by'],
+        $postData['uploaded_by'],
         $postData['title'],
         $postData['content_type'],
-        $postData['genter'],
-        (int)$postData['starting_age'],
-        (int)$postData['ending_age'],
+        $postData['gender'],
+        $postData['starting_age'],
+        $postData['ending_age'],
         $postData['city'],
         $postData['shoot'],
         $postData['remuneration_name'],
-        (int)$postData['remuneration_amount'],
+        $postData['remuneration_amount'],
         $postData['crew_req'],
         $postData['crew_type'],
         $postData['expiry_date'],
@@ -24,11 +24,25 @@ function addJob($conn, $postData)
         $postData['payment_status']
     );
     if ($stmt->execute()) {
-        return $stmt->insert_id;
+        // return $stmt->insert_id;
+        return getJob($conn, $stmt->insert_id);
     } else {
         return json_encode(array());
     }
 }
+
+function getJob($conn, $jobId)
+{
+    $sql = "SELECT * FROM `casting_calls` WHERE `id` = " . $jobId;
+    $stmt = $conn->query($sql);
+
+    if ($stmt->num_rows > 0) {
+        return json_encode(array($stmt->fetch_assoc()));
+    } else {
+        return json_encode(array());
+    }
+}
+
 
 function applyToCall($conn, $postData)
 {
@@ -47,7 +61,7 @@ function applyToCall($conn, $postData)
     if ($stmt->execute()) {
         return $stmt->insert_id;
     } else {
-        return json_encode(array());
+        return json_encode($stmt->error);
     }
 }
 
@@ -55,7 +69,7 @@ function acceptApply($conn, $id)
 {
     $sql = "UPDATE `casting_calls_applies` SET `apply_status`= 1  WHERE `id` = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $id['apply_id']);
+    $stmt->bind_param('i', $id);
     if ($stmt->execute()) {
         return "";
     } else {
@@ -70,12 +84,11 @@ function rejectApply($conn, $id)
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
     if ($stmt->execute()) {
-        return "";
+        return 1;
     } else {
-        return "";
+        return json_encode(array());
     }
 }
-
 
 function listJobs($conn, $crewTypeId)
 {
