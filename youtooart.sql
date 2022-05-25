@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2022 at 09:26 PM
+-- Generation Time: May 25, 2022 at 09:38 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -119,6 +119,20 @@ CREATE TABLE `friend_request` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `notification_type` varchar(255) NOT NULL,
+  `notification_text` varchar(255) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `posts`
 --
 
@@ -215,16 +229,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `user_type`, `Phone`, `Category`, `profile_picture`, `first_name`, `last_name`, `company_name`, `city`, `state`, `short_bio`, `contact_info`, `feature_img_1`, `feature_img_2`, `feature_img_3`, `work_video`, `work_photos`, `login_otp`, `is_verified`, `is_active`, `date_added`) VALUES
-(9, 1, '+923119219602', 1, 'https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', 'Hashir', 'Shah', '', 'Islamabad', 'Pakistan', 'I am a software engineer.', '', 'abcd', 'https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', 'https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', 'https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', 'https://agriblobstorage.blob.core.windows.net\\/dev-images\\/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', '', 0, 0, '2022-04-10 11:51:40'),
-(10, 1, '+923119219601', 1, 'https://agriblobstorage.blob.core.windows.net/dev-images/da174719-e98b-43f0-8c80-e32e24cadb49.jpg', 'Syed Hashir', 'Ali Shah', '', 'Kohat', 'Pakistan', 'I am a software engineer by profession and an actor by passion', '', '', '', '', '', '', '', 0, 0, '2022-04-14 07:37:15');
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `casting_calls`
+--
+ALTER TABLE `casting_calls`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `casting_calls_applies`
@@ -264,6 +276,12 @@ ALTER TABLE `friend_request`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_2_id` (`sent_to`),
   ADD KEY `user_1_id` (`sent_by`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `posts`
@@ -315,6 +333,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `casting_calls`
+--
+ALTER TABLE `casting_calls`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `casting_calls_applies`
 --
 ALTER TABLE `casting_calls_applies`
@@ -342,6 +366,12 @@ ALTER TABLE `friends`
 -- AUTO_INCREMENT for table `friend_request`
 --
 ALTER TABLE `friend_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -378,7 +408,7 @@ ALTER TABLE `post_tags`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
